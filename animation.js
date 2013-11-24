@@ -5,30 +5,19 @@ var canvas = null;
 var ctx = null;
 var frameRate = 1000/30;
 var frame = 0;
-var assets = ['/media/img/gamedev/robowalk/robowalk00.png',
-              '/media/img/gamedev/robowalk/robowalk01.png',
-              '/media/img/gamedev/robowalk/robowalk02.png',
-              '/media/img/gamedev/robowalk/robowalk03.png',
-              '/media/img/gamedev/robowalk/robowalk04.png',
-              '/media/img/gamedev/robowalk/robowalk05.png',
-              '/media/img/gamedev/robowalk/robowalk06.png',
-              '/media/img/gamedev/robowalk/robowalk07.png',
-              '/media/img/gamedev/robowalk/robowalk08.png',
-              '/media/img/gamedev/robowalk/robowalk09.png',
-              '/media/img/gamedev/robowalk/robowalk10.png',
-              '/media/img/gamedev/robowalk/robowalk11.png',
-              '/media/img/gamedev/robowalk/robowalk12.png',
-              '/media/img/gamedev/robowalk/robowalk13.png',
-              '/media/img/gamedev/robowalk/robowalk14.png',
-              '/media/img/gamedev/robowalk/robowalk15.png',
-              '/media/img/gamedev/robowalk/robowalk16.png',
-              '/media/img/gamedev/robowalk/robowalk17.png',
-              '/media/img/gamedev/robowalk/robowalk18.png'
+var assets = [
+              'x-wing.jpg'
              ];
 var frames = [];
 
 var onImageLoad = function(){
     console.log("IMAGE!!!");
+    for (i = 0; i < assets.length; i++) {
+	if (frames[i] == this) {
+         	frames[i].width = this.naturalWidth;
+        	frames[i].height = this.naturalWidth;
+	}
+    }
 };
 
 var setup = function() {
@@ -49,13 +38,16 @@ var setup = function() {
     // YOUR CODE HERE
     for (i = 0; i < assets.length; i++) {
         frames.push(new Image());
-        frames[i].onLoad = onImageLoad;
+        frames[i].onload = onImageLoad;
         frames[i].src=assets[i];
+	console.log("load %d image", i);
     }
     setInterval(animate, frameRate);
 };
 
 var animate = function(){
+    console.log("animate");
+    //setInterval(animate, frameRate);
     // Draw each frame in order, looping back around to the 
     // beginning of the animation once you reach the end.
     // Draw each frame at a position of (0,0) on the canvas.
@@ -64,8 +56,13 @@ var animate = function(){
     // and uncommented to see what happens!
     //
     ctx.clearRect(0,0,canvas.width, canvas.height);
-    
-    ctx.drawImage(frames[frame], 100, 100);
+    ctx.translate(10, 10);
+    ctx.translate(frames[frame].width/2, frames[frame].height/2);
+    ctx.rotate(0.1);
+    ctx.drawImage(frames[frame], -frames[frame].width/2, -frames[frame].height/2);
+    ctx.translate(-frames[frame].width/2, -frames[frame].height/2);
+    ctx.translate(-10, -10);
+
     frame = (frame + 1 ) % frames.length;
     
     // YOUR CODE HERE
@@ -73,6 +70,6 @@ var animate = function(){
 
 // We'll call your setup function in our test code, so
 // don't call it in your code.
-// setup();
+setup();
 
 
